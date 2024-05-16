@@ -23,19 +23,26 @@ public class MainActivity extends AppCompatActivity {
         temp=(Spinner)findViewById(R.id.temp);
 
         drink=(Spinner)findViewById(R.id.drink);
-        drink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drink.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener){
             @Override
-            public void onItem(AdapterView<?> parent, View view, int position, long id) {
-                String msg="飲料是"+drink.getSelectedItem().toString()+"\n";
-                if(drink.getSelectedItem().toString().equals("紅茶") || drink.getSelectedItem().toString().equals("綠茶")){
-                    ArrayAdapter<String> tempAdp=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, tempSet1);
-                    temp.setAdapter(tempAdp);
-                }else{
-                    ArrayAdapter<String> tempAdp=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, tempSet2);
-                    temp.setAdapter(tempAdp);
+            public void onItemSeleted(AdapterView<?> parent, View view, int position, long id){
+                String[] tempSet;
+                if (position == 3) {
+                    tempSet = tempSet2;
+                } else {
+                    tempSet = tempSet1;
                 }
-                msg+="甜度是"+temp.getSelectedItem().toString();
-                txv.setText(msg);
+                ArrayAdapter<String> tempAdp =
+                        new ArrayAdapter<>(MainActivity.this,
+                                android.R.layout.simple_spinner_item,
+                                tempSet);
+                tempAdp.setDropDownViewResource(
+                        android.R.layout.simple_spinner_dropdown_item);
+                temp.setAdapter(tempAdp);
+            }
+            @Override
+                    public void onNothingSelected(AdapterView<?> parent){
+
             }
         }
     }
