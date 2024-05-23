@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case SET_RESULT:
+            case 1:
                 if (resultCode == RESULT_OK) {
                     Bundle bundle = data.getExtras();
-                    output.setText("計算結果: " + bundle.getDouble("RESULT"));
+                    Output.setText("計算結果: " + bundle.getDouble("RESULT"));
                 }
                 break;
         }
