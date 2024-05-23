@@ -1,5 +1,7 @@
 package com.example.alertdiolgmultichoicedemo;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,24 +14,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-implements DialogInterface.OnClickListener{
+implements DialogInterface.OnClickListener, DialogInterface.OnMultiChoiceClickListener{
 
-    private String[] items = {"選項1", "選項2", "選項3"};
-    private boolean[] itemsChecked = new boolean[4];
+    private String[] items = {"Samsung", "OPPO", "Apple", "Sony"};
+    private boolean[] itemsChecked = {false, false, false, false};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnSelect =(Button) findViewById(R.id.btnSelect);
+        Button btnSelect = (Button) findViewById(R.id.btnSelect);
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog build=new AlertDialog.Builder(MainActivity.this)
+                AlertDialog build = new AlertDialog.Builder(MainActivity.this)
                         .setTitle("請勾選項")
-                        .setPositiveButton("確定",null)
-                        .setNegativeButton("取消",null)
-                        .setMultiChoiceItems(items, itemsChecked,null)
+                        .setPositiveButton("確定", MainActivity.this)
+                        .setNegativeButton("取消", MainActivity.this)
+                        .setMultiChoiceItems(items, itemsChecked, null)
                         .show();
             }
         });
@@ -37,23 +40,26 @@ implements DialogInterface.OnClickListener{
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        String msg="";
-        switch (which){
+        String msg = "";
+        switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
-                String result = "你選擇了:";
-                for (int index= 0; index< items.length; index++) {
-                    if (itemsChecked[index]) {
-                        result += items[index] + "\n";
+                for (int index = 0; index < items.length; index++) {
+                    if (itemsChecked[index])
+                        msg += items[index] + "\n";
                     }
-                    TextView output = findViewById(R.id.lblOutput);
+                    TextView output = (TextView) findViewById(R.id.lblOutput);
                     output.setText(msg);
                     break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         Toast.makeText(this, "取消", Toast.LENGTH_SHORT).show();
                         break;
+                }
+        }
 
-
-
+        @Override
+        public void onClick(DialogInterface dialog,int which,boolean isChecked){
+            Toast.makeText(MainActivity.this,
+                    items[which] + (isChecked ? "勾選" : "取消"),
+                    Toast.LENGTH_SHORT).show();
         }
     }
-}
